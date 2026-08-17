@@ -1,3 +1,7 @@
+// ========================
+// Supabase 設定
+// ========================
+
 const SUPABASE_URL =
     "https://lejzatvsdpkavflhsgxj.supabase.co";
 
@@ -9,6 +13,41 @@ const supabaseClient =
         SUPABASE_URL,
         SUPABASE_KEY
     );
+
+
+// ========================
+// 取得「今天」的時間範圍
+// ========================
+
+function getTodayRange() {
+
+    const now = new Date();
+
+    const start = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0, 0, 0
+    );
+
+    const end = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0, 0, 0
+    );
+
+    return {
+        start: start.toISOString(),
+        end: end.toISOString()
+    };
+}
+
+
+// ========================
+// 今日餐廳設定
+// ========================
+
 const restaurantSelect =
     document.getElementById("restaurant-select");
 
@@ -27,39 +66,47 @@ function showCurrentRestaurant() {
     if (restaurant) {
 
         currentRestaurant.innerHTML =
-            `<h3> 今日餐廳：${restaurant}</h3>`;
+            `<h3>🍴 今日餐廳：${restaurant}</h3>`;
 
         restaurantSelect.value = restaurant;
 
     } else {
 
         currentRestaurant.innerHTML =
-            "<p>目前還沒設定今日餐廳</p>";
+            "<p>目前還沒設定今日餐廳。</p>";
     }
 }
 
 
-saveButton.addEventListener("click", function () {
+saveButton.addEventListener(
+    "click",
+    function () {
 
-    const restaurant = restaurantSelect.value;
+        const restaurant =
+            restaurantSelect.value;
 
-    if (restaurant === "") {
-        alert("請先選擇餐廳");
-        return;
+        if (restaurant === "") {
+
+            alert("請先選擇餐廳");
+
+            return;
+        }
+
+        localStorage.setItem(
+            "todayRestaurant",
+            restaurant
+        );
+
+        showCurrentRestaurant();
+
+        alert("✅ 今日餐廳設定成功！");
     }
-
-    localStorage.setItem(
-        "todayRestaurant",
-        restaurant
-    );
-
-    showCurrentRestaurant();
-
-    alert("今日餐廳設定成功！");
-});
+);
 
 
 showCurrentRestaurant();
+
+
 // ========================
 // 顯示今日訂單
 // ========================
@@ -70,13 +117,22 @@ const ordersContainer =
 
 async function showOrders() {
 
+    const { start, end } =
+        getTodayRange();
+
+
     const { data: orders, error } =
         await supabaseClient
             .from("orders")
             .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+            .gte("created_at", start)
+            .lt("created_at", end)
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
     if (error) {
@@ -84,7 +140,7 @@ async function showOrders() {
         console.error(error);
 
         ordersContainer.innerHTML =
-            "<p>讀取訂單失敗。</p>";
+            "<p>❌ 讀取訂單失敗。</p>";
 
         return;
     }
@@ -102,39 +158,49 @@ async function showOrders() {
     ordersContainer.innerHTML = "";
 
 
-    orders.forEach(function(order) {
+    orders.forEach(function (order) {
 
         const orderCard =
             document.createElement("div");
 
-        orderCard.className = "order-card";
+        orderCard.className =
+            "order-card";
 
 
         let itemsHTML = "";
 
 
-        order.items.forEach(function(item) {
+        order.items.forEach(
+            function (item) {
 
-            itemsHTML += `
-                <p>
-                    ${item.name}
-                    × ${item.quantity}
-                    — $${item.price * item.quantity}
-                </p>
-            `;
+                const itemTotal =
+                    item.price *
+                    item.quantity;
 
-        });
+                itemsHTML += `
+                    <p>
+                        ${item.name}
+                        × ${item.quantity}
+                        — $${itemTotal}
+                    </p>
+                `;
+            }
+        );
 
 
         const orderTime =
             new Date(
                 order.created_at
-            ).toLocaleString("zh-TW");
+            ).toLocaleString(
+                "zh-TW"
+            );
 
 
         orderCard.innerHTML = `
 
-            <h3>👤 ${order.customer_name}</h3>
+            <h3>
+                👤 ${order.customer_name}
+            </h3>
 
             <p>
                 <strong>餐廳：</strong>
@@ -164,14 +230,11 @@ async function showOrders() {
         `;
 
 
-        ordersContainer.appendChild(orderCard);
-
+        ordersContainer.appendChild(
+            orderCard
+        );
     });
-
 }
-
-
-showOrders();
 
 
 // ========================
@@ -179,15 +242,23 @@ showOrders();
 // ========================
 
 const orderSummary =
-    document.getElementById("order-summary");
+    document.getElementById(
+        "order-summary"
+    );
 
 
 async function showOrderSummary() {
 
+    const { start, end } =
+        getTodayRange();
+
+
     const { data: orders, error } =
         await supabaseClient
             .from("orders")
-            .select("*");
+            .select("*")
+            .gte("created_at", start)
+            .lt("created_at", end);
 
 
     if (error) {
@@ -195,7 +266,7 @@ async function showOrderSummary() {
         console.error(error);
 
         orderSummary.innerHTML =
-            "<p>讀取統計資料失敗。</p>";
+            "<p>❌ 讀取統計資料失敗。</p>";
 
         return;
     }
@@ -204,7 +275,24 @@ async function showOrderSummary() {
     if (orders.length === 0) {
 
         orderSummary.innerHTML =
-            "<p>目前還沒有統計資料。</p>";
+            `
+            <p>目前還沒有統計資料。</p>
+
+            <p>
+                <strong>訂餐人數：</strong>
+                0 人
+            </p>
+
+            <p>
+                <strong>餐點總份數：</strong>
+                0 份
+            </p>
+
+            <p>
+                <strong>總金額：</strong>
+                $0
+            </p>
+            `;
 
         return;
     }
@@ -216,66 +304,173 @@ async function showOrderSummary() {
     let totalPrice = 0;
 
 
-    orders.forEach(function(order) {
+    orders.forEach(function (order) {
 
         totalPrice += order.total;
 
-        order.items.forEach(function(item) {
 
-            totalMeals += item.quantity;
+        order.items.forEach(
+            function (item) {
 
-            if (itemSummary[item.name]) {
+                totalMeals +=
+                    item.quantity;
 
-                itemSummary[item.name] += item.quantity;
 
-            } else {
+                if (
+                    itemSummary[item.name]
+                ) {
 
-                itemSummary[item.name] = item.quantity;
+                    itemSummary[
+                        item.name
+                    ] += item.quantity;
 
+                } else {
+
+                    itemSummary[
+                        item.name
+                    ] = item.quantity;
+                }
             }
-
-        });
-
+        );
     });
 
 
     let summaryHTML = "";
 
 
-    Object.keys(itemSummary).forEach(function(itemName) {
+    Object.keys(
+        itemSummary
+    ).forEach(
+        function (itemName) {
 
-        summaryHTML += `
-            <div class="summary-item">
-                <span>${itemName}</span>
-                <strong>× ${itemSummary[itemName]}</strong>
-            </div>
-        `;
+            summaryHTML += `
+                <div class="summary-item">
 
-    });
+                    <span>
+                        ${itemName}
+                    </span>
+
+                    <strong>
+                        × ${itemSummary[itemName]}
+                    </strong>
+
+                </div>
+            `;
+        }
+    );
 
 
     summaryHTML += `
+
         <hr>
 
         <p>
-            <strong>訂餐人數：</strong>
+            <strong>
+                訂餐人數：
+            </strong>
+
             ${orders.length} 人
         </p>
 
         <p>
-            <strong>餐點總份數：</strong>
+            <strong>
+                餐點總份數：
+            </strong>
+
             ${totalMeals} 份
         </p>
 
         <p>
-            <strong>總金額：</strong>
+            <strong>
+                總金額：
+            </strong>
+
             $${totalPrice}
         </p>
     `;
 
 
-    orderSummary.innerHTML = summaryHTML;
+    orderSummary.innerHTML =
+        summaryHTML;
 }
 
+
+// ========================
+// 清空今日訂單
+// ========================
+
+const clearOrdersButton =
+    document.getElementById(
+        "clear-orders"
+    );
+
+
+if (clearOrdersButton) {
+
+    clearOrdersButton.addEventListener(
+        "click",
+        async function () {
+
+            const confirmed =
+                confirm(
+                    "⚠️ 確定要清空今天所有訂單嗎？\n\n刪除後無法復原。"
+                );
+
+
+            if (!confirmed) {
+
+                return;
+            }
+
+
+            const { start, end } =
+                getTodayRange();
+
+
+            const { error } =
+                await supabaseClient
+                    .from("orders")
+                    .delete()
+                    .gte(
+                        "created_at",
+                        start
+                    )
+                    .lt(
+                        "created_at",
+                        end
+                    );
+
+
+            if (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ 清除失敗"
+                );
+
+                return;
+            }
+
+
+            alert(
+                "✅ 今日訂單已清空"
+            );
+
+
+            // 重新讀取畫面
+            await showOrders();
+
+            await showOrderSummary();
+        }
+    );
+}
+
+
+// ========================
+// 網頁開啟時載入
+// ========================
+
+showOrders();
 
 showOrderSummary();
