@@ -1,0 +1,154 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    background: #f5f6f8;
+    color: #222;
+}
+
+header {
+    background: white;
+    text-align: center;
+    padding: 30px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+header p {
+    color: #777;
+    margin-top: 8px;
+}
+
+main {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+#restaurant-info {
+    background: #fff7e8;
+    padding: 18px;
+    border-radius: 10px;
+}
+
+#restaurant-info h3 {
+    margin-top: 0;
+}
+
+#menu {
+    min-height: 80px;
+}
+
+#cart {
+    min-height: 60px;
+}
+
+#total {
+    font-size: 24px;
+    font-weight: bold;
+}
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+
+    background: #f8f9fa;
+
+    border-radius: 10px;
+}
+
+.menu-item h3 {
+    margin: 0 0 6px 0;
+}
+
+.menu-item p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.add-button {
+    background: #222;
+    color: white;
+
+    border: none;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.add-button:hover {
+    opacity: 0.8;
+}
+
+
+.cart-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+
+.cart-item-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.quantity-control {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.quantity-control button {
+    border: none;
+
+    padding: 7px 11px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+
+.delete-button {
+    background: #eee;
+}
