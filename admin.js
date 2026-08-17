@@ -16,7 +16,7 @@ const supabaseClient =
 
 
 // ========================
-// 取得「今天」的時間範圍
+// 取得今天的時間範圍
 // ========================
 
 function getTodayRange() {
@@ -78,30 +78,33 @@ function showCurrentRestaurant() {
 }
 
 
-saveButton.addEventListener(
-    "click",
-    function () {
+if (saveButton) {
 
-        const restaurant =
-            restaurantSelect.value;
+    saveButton.addEventListener(
+        "click",
+        function () {
 
-        if (restaurant === "") {
+            const restaurant =
+                restaurantSelect.value;
 
-            alert("請先選擇餐廳");
+            if (restaurant === "") {
 
-            return;
+                alert("請先選擇餐廳");
+
+                return;
+            }
+
+            localStorage.setItem(
+                "todayRestaurant",
+                restaurant
+            );
+
+            showCurrentRestaurant();
+
+            alert("✅ 今日餐廳設定成功！");
         }
-
-        localStorage.setItem(
-            "todayRestaurant",
-            restaurant
-        );
-
-        showCurrentRestaurant();
-
-        alert("✅ 今日餐廳設定成功！");
-    }
-);
+    );
+}
 
 
 showCurrentRestaurant();
@@ -120,7 +123,6 @@ async function showOrders() {
     const { start, end } =
         getTodayRange();
 
-
     const { data: orders, error } =
         await supabaseClient
             .from("orders")
@@ -137,7 +139,10 @@ async function showOrders() {
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "讀取訂單錯誤：",
+            error
+        );
 
         ordersContainer.innerHTML =
             "<p>❌ 讀取訂單失敗。</p>";
@@ -146,7 +151,7 @@ async function showOrders() {
     }
 
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
 
         ordersContainer.innerHTML =
             "<p>目前還沒有訂單。</p>";
@@ -170,22 +175,30 @@ async function showOrders() {
         let itemsHTML = "";
 
 
-        order.items.forEach(
-            function (item) {
+        if (Array.isArray(order.items)) {
 
-                const itemTotal =
-                    item.price *
-                    item.quantity;
+            order.items.forEach(
+                function (item) {
 
-                itemsHTML += `
-                    <p>
-                        ${item.name}
-                        × ${item.quantity}
-                        — $${itemTotal}
-                    </p>
-                `;
-            }
-        );
+                    const itemTotal =
+                        item.price *
+                        item.quantity;
+
+                    itemsHTML += `
+                        <p>
+                            ${item.name}
+                            × ${item.quantity}
+                            — $${itemTotal}
+                        </p>
+                    `;
+                }
+            );
+
+        } else {
+
+            itemsHTML =
+                "<p>餐點資料格式錯誤</p>";
+        }
 
 
         const orderTime =
@@ -263,7 +276,10 @@ async function showOrderSummary() {
 
     if (error) {
 
-        console.error(error);
+        console.error(
+            "讀取統計錯誤：",
+            error
+        );
 
         orderSummary.innerHTML =
             "<p>❌ 讀取統計資料失敗。</p>";
@@ -272,10 +288,9 @@ async function showOrderSummary() {
     }
 
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
 
-        orderSummary.innerHTML =
-            `
+        orderSummary.innerHTML = `
             <p>目前還沒有統計資料。</p>
 
             <p>
@@ -292,7 +307,7 @@ async function showOrderSummary() {
                 <strong>總金額：</strong>
                 $0
             </p>
-            `;
+        `;
 
         return;
     }
@@ -306,32 +321,41 @@ async function showOrderSummary() {
 
     orders.forEach(function (order) {
 
-        totalPrice += order.total;
+        totalPrice +=
+            Number(order.total) || 0;
 
 
-        order.items.forEach(
-            function (item) {
+        if (Array.isArray(order.items)) {
 
-                totalMeals +=
-                    item.quantity;
+            order.items.forEach(
+                function (item) {
+
+                    const quantity =
+                        Number(
+                            item.quantity
+                        ) || 0;
+
+                    totalMeals +=
+                        quantity;
 
 
-                if (
-                    itemSummary[item.name]
-                ) {
+                    if (
+                        itemSummary[item.name]
+                    ) {
 
-                    itemSummary[
-                        item.name
-                    ] += item.quantity;
+                        itemSummary[
+                            item.name
+                        ] += quantity;
 
-                } else {
+                    } else {
 
-                    itemSummary[
-                        item.name
-                    ] = item.quantity;
+                        itemSummary[
+                            item.name
+                        ] = quantity;
+                    }
                 }
-            }
-        );
+            );
+        }
     });
 
 
@@ -411,6 +435,11 @@ if (clearOrdersButton) {
         "click",
         async function () {
 
+            console.log(
+                "清空訂單按鈕被點擊"
+            );
+
+
             const confirmed =
                 confirm(
                     "⚠️ 確定要清空今天所有訂單嗎？\n\n刪除後無法復原。"
@@ -427,7 +456,17 @@ if (clearOrdersButton) {
                 getTodayRange();
 
 
-            const { error } =
+            console.log(
+                "準備刪除：",
+                start,
+                end
+            );
+
+
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
                     .from("orders")
                     .delete()
@@ -438,31 +477,47 @@ if (clearOrdersButton) {
                     .lt(
                         "created_at",
                         end
-                    );
+                    )
+                    .select();
 
 
             if (error) {
 
-                console.error(error);
+                console.error(
+                    "刪除訂單錯誤：",
+                    error
+                );
 
                 alert(
-                    "❌ 清除失敗"
+                    "❌ 清除失敗\n\n" +
+                    error.message
                 );
 
                 return;
             }
 
 
-            alert(
-                "✅ 今日訂單已清空"
+            console.log(
+                "成功刪除：",
+                data
             );
 
 
-            // 重新讀取畫面
+            alert(
+                `✅ 今日訂單已清空\n共刪除 ${data ? data.length : 0} 筆訂單`
+            );
+
+
             await showOrders();
 
             await showOrderSummary();
         }
+    );
+
+} else {
+
+    console.error(
+        "找不到 #clear-orders 按鈕"
     );
 }
 
