@@ -6,7 +6,7 @@ const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
-// 所有餐廳菜單
+
 const restaurants = {
 
     "菜菜優纖": [
@@ -105,7 +105,7 @@ const restaurants = {
 };
 
 
-// 找到網頁上的區塊
+
 const restaurantInfo =
     document.getElementById("restaurant-info");
 
@@ -113,7 +113,6 @@ const menuContainer =
     document.getElementById("menu");
 
 
-// 讀取管理員設定的今日餐廳
 const todayRestaurant =
     localStorage.getItem("todayRestaurant");
 
@@ -139,12 +138,11 @@ if (!todayRestaurant) {
 }
 
 
-// 顯示今日菜單
-// 購物車
+
 let cart = [];
 
 
-// 顯示今日菜單
+
 function showMenu(restaurantName) {
 
     const menu = restaurants[restaurantName];
@@ -179,7 +177,7 @@ function showMenu(restaurantName) {
 }
 
 
-// 加入購物車
+
 function addToCart(item) {
 
     const existingItem =
@@ -204,7 +202,7 @@ function addToCart(item) {
 }
 
 
-// 更新購物車畫面
+
 function updateCart() {
 
     const cartContainer =
@@ -275,7 +273,7 @@ function updateCart() {
 }
 
 
-// 增加數量
+
 function increaseQuantity(index) {
 
     cart[index].quantity++;
@@ -284,7 +282,6 @@ function increaseQuantity(index) {
 }
 
 
-// 減少數量
 function decreaseQuantity(index) {
 
     cart[index].quantity--;
@@ -297,16 +294,14 @@ function decreaseQuantity(index) {
 }
 
 
-// 刪除餐點
+
 function removeItem(index) {
 
     cart.splice(index, 1);
 
     updateCart();
 }
-// ========================
-// 送出訂單
-// ========================
+
 
 const submitOrderButton =
     document.getElementById("submit-order");
@@ -325,7 +320,7 @@ submitOrderButton.addEventListener("click", async function() {
         .trim();
 
 
-    // 檢查姓名
+   
     if (customerName === "") {
 
         alert("請輸入姓名");
@@ -334,7 +329,7 @@ submitOrderButton.addEventListener("click", async function() {
     }
 
 
-    // 檢查購物車
+    
     if (cart.length === 0) {
 
         alert("購物車是空的，請先選擇餐點");
@@ -343,7 +338,7 @@ submitOrderButton.addEventListener("click", async function() {
     }
 
 
-    // 計算總金額
+   
     let totalPrice = 0;
 
     cart.forEach(function(item) {
@@ -354,7 +349,7 @@ submitOrderButton.addEventListener("click", async function() {
     });
 
 
-    // 建立訂單
+   
     const order = {
 
         id: Date.now(),
@@ -399,13 +394,13 @@ if (error) {
     alert("🎉 訂單送出成功！");
 
 
-    // 清空購物車
+   
     cart = [];
 
     updateCart();
 
 
-    // 清空姓名和備註
+    
     document.getElementById("customer-name").value = "";
 
     document.getElementById("order-note").value = "";
