@@ -33,18 +33,24 @@ const restaurantSelect = document.getElementById("restaurant-select");
 const saveButton = document.getElementById("save-restaurant");
 const currentRestaurant = document.getElementById("current-restaurant");
 
-function showCurrentRestaurant() {
-    const restaurant = localStorage.getItem("todayRestaurant");
+// 從 Supabase 雲端讀取目前設定的餐廳
+async function showCurrentRestaurant() {
+    const { data, error } = await supabaseClient
+        .from("settings")
+        .select("value")
+        .eq("key", "todayRestaurant")
+        .single();
 
-    if (restaurant) {
-        currentRestaurant.innerHTML = `<h3>今日餐廳：${restaurant}</h3>`;
-        restaurantSelect.value = restaurant;
+    if (data && data.value) {
+        currentRestaurant.innerHTML = `<h3>🍴 今日餐廳：${data.value}</h3>`;
+        restaurantSelect.value = data.value;
     } else {
         currentRestaurant.innerHTML = "<p>目前還沒設定今日餐廳。</p>";
     }
 }
 
-saveButton.addEventListener("click", function () {
+// 點擊設定時，寫入 Supabase 雲端
+saveButton.addEventListener("click", async function () {
     const restaurant = restaurantSelect.value;
 
     if (restaurant === "") {
@@ -52,9 +58,18 @@ saveButton.addEventListener("click", function () {
         return;
     }
 
-    localStorage.setItem("todayRestaurant", restaurant);
+    const { error } = await supabaseClient
+        .from("settings")
+        .upsert({ key: "todayRestaurant", value: restaurant });
+
+    if (error) {
+        console.error(error);
+        alert("設定失敗，請檢查 Supabase settings 資料表權限");
+        return;
+    }
+
     showCurrentRestaurant();
-    alert("今日餐廳設定成功！");
+    alert("今日餐廳設定成功，已同步至所有同仁裝置！");
 });
 
 showCurrentRestaurant();
@@ -79,7 +94,7 @@ async function showOrders() {
         return;
     }
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
         ordersContainer.innerHTML = "<p>目前還沒有訂單。</p>";
         return;
     }
@@ -104,7 +119,7 @@ async function showOrders() {
         const orderTime = new Date(order.created_at).toLocaleString("zh-TW");
 
         orderCard.innerHTML = `
-            <h3>${order.customer_name}</h3>
+            <h3>👤 ${order.customer_name}</h3>
             <p><strong>餐廳：</strong>${order.restaurant}</p>
             <hr>
             ${itemsHTML}
@@ -135,7 +150,7 @@ async function showOrderSummary() {
         return;
     }
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
         orderSummary.innerHTML = `
             <p>目前還沒有統計資料。</p>
             <p><strong>訂餐人數：</strong>0 人</p>
