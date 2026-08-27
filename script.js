@@ -19,7 +19,7 @@ const restaurants = {
         { name: "黑松露綜合野菇拌飯", price: 200 }
     ],
 
-    "餐盒": [
+    "樂天皇朝": [
         { name: "菠蘿咕嚕肉", price: 250 },
         { name: "黑胡椒牛肉", price: 250 },
         { name: "蒜香排骨", price: 250 },
@@ -68,7 +68,7 @@ const restaurants = {
         { name: "經典美式起司漢堡", price: 290 }
     ],
 
-    "台菜": [
+    "開飯川食堂": [
         { name: "清酸帶鹹開胃便當", price: 200 },
         { name: "肉香四溢過癮便當", price: 200 },
         { name: "辛香彈牙涮嘴便當", price: 200 },
@@ -391,7 +391,7 @@ if (error) {
 
   
 
-    alert("🎉 訂單送出成功！");
+    alert("訂單送出成功！");
 
 
    
