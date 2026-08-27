@@ -94,17 +94,28 @@ const restaurants = {
 
 const restaurantInfo = document.getElementById("restaurant-info");
 const menuContainer = document.getElementById("menu");
-const todayRestaurant = localStorage.getItem("todayRestaurant");
+let todayRestaurant = "";
 
-if (!todayRestaurant) {
+// 從 Supabase 讀取雲端設定的今日餐廳
+async function initTodayRestaurant() {
+    const { data, error } = await supabaseClient
+        .from("settings")
+        .select("value")
+        .eq("key", "todayRestaurant")
+        .single();
+
+    if (error || !data || !data.value) {
+        restaurantInfo.innerHTML = `
+            <h3>還沒設定餐廳等一下喔</h3>
+            <p>請等待管理員設定今天的餐廳。</p>
+        `;
+        menuContainer.innerHTML = "<p>目前還沒有菜單。</p>";
+        return;
+    }
+
+    todayRestaurant = data.value;
     restaurantInfo.innerHTML = `
-        <h3>還沒設定餐廳等一下喔</h3>
-        <p>請等待管理員設定今天的餐廳。</p>
-    `;
-    menuContainer.innerHTML = "<p>目前還沒有菜單。</p>";
-} else {
-    restaurantInfo.innerHTML = `
-        <h3> ${todayRestaurant}</h3>
+        <h3>${todayRestaurant}</h3>
         <p>以下是今天可以選擇的餐點</p>
     `;
     showMenu(todayRestaurant);
@@ -114,13 +125,17 @@ let cart = [];
 
 function showMenu(restaurantName) {
     const menu = restaurants[restaurantName];
+    if (!menu) {
+        menuContainer.innerHTML = "<p>找不到此餐廳的菜單資料。</p>";
+        return;
+    }
+
     menuContainer.innerHTML = "";
 
     menu.forEach(function (item) {
         const card = document.createElement("div");
         card.className = "menu-item";
 
-        // 如果有 cropClass，就產生對應的圖片視窗
         const imageHTML = item.cropClass 
             ? `<div class="sprite-thumb ${item.cropClass}"></div>` 
             : "";
@@ -264,3 +279,6 @@ submitOrderButton.addEventListener("click", async function () {
     document.getElementById("customer-name").value = "";
     document.getElementById("order-note").value = "";
 });
+
+// 啟動頁面並載入今日餐廳
+initTodayRestaurant();
