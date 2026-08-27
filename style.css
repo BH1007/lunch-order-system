@@ -54,8 +54,13 @@ section h2 {
     margin-top: 0;
 }
 
+/* 菜單網格排版 */
 #menu {
     min-height: 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 15px;
 }
 
 #cart {
@@ -67,23 +72,51 @@ section h2 {
     font-weight: bold;
 }
 
+/* 餐點卡片樣式 */
 .menu-item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    padding: 18px;
-    margin-bottom: 12px;
+    padding: 14px;
     background: #f8f9fa;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    overflow: hidden;
+}
+
+/* 圖片裁切核心設定 */
+.sprite-thumb {
+    width: 100%;
+    height: 140px;
+    background-image: url('tgi-menu.jpg');
+    background-size: 200% 300%; /* 2欄 x 3列 */
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+/* 6 個對應餐點的裁切座標 */
+.crop-1 { background-position: 0% 0%; }     /* 清新香橘雞肉沙拉 */
+.crop-2 { background-position: 100% 0%; }   /* 雙醬炭烤豬肋排飯 */
+.crop-3 { background-position: 0% 50%; }    /* 野菇起司漢堡排蓋飯 */
+.crop-4 { background-position: 100% 50%; }  /* 蕃茄炭烤雞肉筆尖麵 */
+.crop-5 { background-position: 0% 100%; }   /* 蕃茄酥炸魚柳筆尖麵 */
+.crop-6 { background-position: 100% 100%; } /* 經典美式起司漢堡 */
+
+.menu-info {
+    margin-bottom: 12px;
 }
 
 .menu-item h3 {
     margin: 0 0 6px 0;
+    font-size: 16px;
 }
 
 .menu-item p {
     margin: 0;
     font-weight: bold;
+    color: #e53e3e;
 }
 
 .add-button {
@@ -93,6 +126,9 @@ section h2 {
     padding: 10px 16px;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: opacity 0.2s;
 }
 
 .add-button:hover {
@@ -129,19 +165,3 @@ section h2 {
 .delete-button {
     background: #eee;
 }
-.sprite-thumb {
-    width: 100%;
-    height: 150px;
-    background-image: url('tgi-menu.jpg');
-    background-size: 200% 300%; /* 2欄 x 3列 */
-    background-repeat: no-repeat;
-    border-radius: 8px;
-}
-
-/* 6 個對應餐點的裁切座標 */
-.crop-1 { background-position: 0% 0%; }     /* 清新香橘雞肉沙拉 */
-.crop-2 { background-position: 100% 0%; }   /* 雙醬炭烤豬肋排飯 */
-.crop-3 { background-position: 0% 50%; }    /* 野菇起司漢堡排蓋飯 */
-.crop-4 { background-position: 100% 50%; }  /* 蕃茄炭烤雞肉筆尖麵 */
-.crop-5 { background-position: 0% 100%; }   /* 蕃茄酥炸魚柳筆尖麵 */
-.crop-6 { background-position: 100% 100%; } /* 經典美式起司漢堡 */
