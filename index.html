@@ -3,60 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公司午餐點餐系統</title>
+    <title>OCBC Global Markets Working Lunch Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <header>
-        <h1>🍱 公司午餐點餐系統</h1>
-        <p>選擇今天的午餐</p>
+        <h1>Working Lunch Portal</h1>
+        <p>Select Today's Order</p>
     </header>
 
     <main>
 
         <section>
-            <h2>今日餐廳</h2>
+            <h2>Today's Restaurant</h2>
             <div id="restaurant-info">
-                <h3>今日餐廳：還沒決定</h3>
-                <p>請等待管理員選擇今天的餐廳。</p>
+                <h3>Pending Selection</h3>
+                <p>Awaiting Intern Configuration</p>
             </div>
         </section>
 
         <section>
-            <h2>今日菜單</h2>
+            <h2>Daily Menu</h2>
             <div id="menu">
-                <p>目前還沒有菜單。</p>
+                <p>No Menu Available</p>
             </div>
         </section>
 
         <section>
-            <h2>🛒 我的購物車</h2>
+            <h2>Order Cart</h2>
             <div id="cart">
-                <p>購物車目前是空的。</p>
+                <p>Cart is Empty</p>
             </div>
 
-            <h3>總金額：$<span id="total">0</span></h3>
+            <h3>Total Amount：$<span id="total">0</span></h3>
 
             <div class="checkout">
-                <h3>訂購資料</h3>
+                <h3>Order Details</h3>
 
-                <label for="customer-name">姓名</label>
+                <label for="customer-name">Name</label>
                 <input
                     type="text"
                     id="customer-name"
-                    placeholder="請輸入姓名"
+                    placeholder="Enter Name"
                 >
 
-                <label for="order-note">備註（選填）</label>
+                <label for="order-note">Special Instructions (Optional) </label>
                 <textarea
                     id="order-note"
-                    placeholder="例如：不要辣、不要香菜"
+                    placeholder="e.g., No spicy, dressing on side"
                 ></textarea>
 
                 <button id="submit-order">
-                    確認送出訂單
+                    Submit Order
                 </button>
             </div>
         </section>
