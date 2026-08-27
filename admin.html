@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal</title>
+    <title>午餐系統｜管理員</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <header>
-        <h1>Intern Admin</h1>
-        <p>Configure today's lunch vendor</p>
+        <h1>午餐系統管理員</h1>
+        <p>設定今天公司要吃的餐廳</p>
     </header>
 
     <main>
 
         <section>
-            <h2>Vendor Configuration</h2>
+            <h2>今日餐廳設定</h2>
 
             <select id="restaurant-select">
-                <option value="">Select a vendor</option>
+                <option value="">請選擇餐廳</option>
                 <option value="菜菜優纖">菜菜優纖</option>
                 <option value="樂天皇朝">樂天皇朝</option>
                 <option value="餃子の王將">餃子の王將</option>
@@ -31,30 +31,30 @@
             </select>
 
             <button id="save-restaurant">
-                Set as Today's Vendor
+                設定為今日餐廳
             </button>
 
             <div id="current-restaurant">
-                <p>No vendor configured for today yet</p>
+                <p>目前尚未設定今日餐廳</p>
             </div>
 
         </section>
 
         <section>
-            <h2>Today's Order Analytics</h2>
+            <h2>今日訂餐統計</h2>
             <div id="order-summary">
-                <p>No analytics data available at the moment.</p>
+                <p>目前還沒有統計資料。</p>
             </div>
         </section>
 
         <section>
-            <h2>Live Desk Orders</h2>
+            <h2>📋 今日訂單</h2>
             <button id="clear-orders">
-                Clear Today's Records
+                🗑️ 清空今日訂單
             </button>
 
             <div id="orders">
-                <p>No orders placed today.</p>
+                <p>目前還沒有訂單。</p>
             </div>
         </section>
 
