@@ -1,84 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCBC GM Portal | Desk Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>午餐系統｜管理員</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <header class="navbar">
-        <div class="nav-brand">
-            <div class="brand-logo">
-                <i class="fa-solid fa-user-shield"></i>
-            </div>
-            <div class="brand-text">
-                <h1>OCBC Bank</h1>
-                <span>Global Markets Desk — Admin Console</span>
-            </div>
-        </div>
-        <div class="nav-badge admin-badge">
-            <i class="fa-solid fa-lock"></i> Desk Admin Mode
-        </div>
+    <header>
+        <h1>午餐系統管理員</h1>
+        <p>設定今天公司要吃的餐廳</p>
     </header>
 
-    <main class="container">
-        <!-- Configuration Card -->
-        <section class="card admin-control-card">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-gear"></i> Set Today's Restaurant</h2>
+    <main>
+
+        <section>
+            <h2>今日餐廳設定</h2>
+
+            <select id="restaurant-select">
+                <option value="">請選擇餐廳</option>
+                <option value="菜菜優纖">菜菜優纖</option>
+                <option value="餐盒">餐盒</option>
+                <option value="餃子の王將">餃子の王將</option>
+                <option value="大戶屋">大戶屋</option>
+                <option value="TGI FRIDAYS">TGI FRIDAYS</option>
+                <option value="台菜">台菜</option>
+                <option value="大心">大心</option>
+            </select>
+
+            <button id="save-restaurant">
+                設定為今日餐廳
+            </button>
+
+            <div id="current-restaurant">
+                <p>目前尚未設定今日餐廳</p>
             </div>
-            <div class="control-row">
-                <div class="select-wrapper">
-                    <i class="fa-solid fa-utensils"></i>
-                    <select id="restaurant-select">
-                        <option value="">-- Choose Target Restaurant --</option>
-                        <option value="菜菜優纖">菜菜優纖 (Gourmet Salad & Healthy Bowls)</option>
-                        <option value="餐盒">餐盒 (Executive Lunch Bento)</option>
-                        <option value="餃子の王將">餃子の王將 (Gyoza no Ohsho)</option>
-                        <option value="大戶屋">大戶屋 (Ootoya Japanese)</option>
-                        <option value="TGI FRIDAYS">TGI FRIDAYS (American Grill)</option>
-                        <option value="台菜">台菜 (Authentic Taiwanese Cuisine)</option>
-                        <option value="大心">大心 (Very Thai Noodles)</option>
-                    </select>
-                </div>
-                <button id="save-restaurant" class="btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i> Apply & Broadcast
-                </button>
-            </div>
-            <div id="current-restaurant" class="status-box">
-                <p>Checking active restaurant configuration...</p>
+
+        </section>
+
+        <section>
+            <h2>📊 今日訂餐統計</h2>
+            <div id="order-summary">
+                <p>目前還沒有統計資料。</p>
             </div>
         </section>
 
-        <!-- KPI Metrics & Order Aggregation -->
-        <section class="card stats-card">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-chart-pie"></i> Order Summary & Analytics</h2>
-            </div>
-            <div id="order-summary" class="stats-container">
-                <p class="empty-state">Loading real-time order statistics...</p>
+        <section>
+            <h2>📋 今日訂單</h2>
+            <button id="clear-orders">
+                🗑️ 清空今日訂單
+            </button>
+
+            <div id="orders">
+                <p>目前還沒有訂單。</p>
             </div>
         </section>
 
-        <!-- Live Orders Table -->
-        <section class="card orders-card">
-            <div class="section-header space-between">
-                <h2><i class="fa-solid fa-list-check"></i> Live Desk Orders</h2>
-                <button id="clear-orders" class="btn-danger">
-                    <i class="fa-solid fa-trash-can"></i> Clear Today's Records
-                </button>
-            </div>
-            <div id="orders" class="orders-grid">
-                <p class="empty-state">No orders placed today.</p>
-            </div>
-        </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="admin.js"></script>
+
 </body>
 </html>
