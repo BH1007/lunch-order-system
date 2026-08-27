@@ -119,7 +119,14 @@ function showMenu(restaurantName) {
     menu.forEach(function (item) {
         const card = document.createElement("div");
         card.className = "menu-item";
+
+        // 如果有 cropClass，就產生對應的圖片視窗
+        const imageHTML = item.cropClass 
+            ? `<div class="sprite-thumb ${item.cropClass}"></div>` 
+            : "";
+
         card.innerHTML = `
+            ${imageHTML}
             <div class="menu-info">
                 <h3>${item.name}</h3>
                 <p>$${item.price}</p>
