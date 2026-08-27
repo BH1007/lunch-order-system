@@ -38,11 +38,8 @@ const restaurants = {
         { name: "炒飯便當", price: 218 }
     ],
     "大戶屋": [
-        { name: "炭烤𩸽魚便當", price: 370 },
         { name: "炭烤鯖魚便當", price: 280 },
         { name: "炸腰內肉便當", price: 290 },
-        { name: "醬煮龍虎斑便當", price: 430 },
-        { name: "炭烤黃金鯧便當", price: 360 },
         { name: "豬里肌便當", price: 270 },
         { name: "炭烤雞肉香橘醋便當", price: 270 },
         { name: "炭烤青醬雞排便當", price: 260 },
@@ -50,16 +47,15 @@ const restaurants = {
         { name: "什蔬燴黑醋醬便當", price: 240 },
         { name: "雞肉蔬菜燴黑醋醬便當", price: 260 },
         { name: "豬排蛋蓋飯便當", price: 260 },
-        { name: "炭烤雞肉蛋蓋飯便當", price: 250 },
-        { name: "炭烤鰻魚蓋飯便當（大）", price: 490 }
+        { name: "炭烤雞肉蛋蓋飯便當", price: 250 }
     ],
     "TGI FRIDAYS": [
-        { name: "清新香橘雞肉沙拉", price: 230 },
-        { name: "雙醬炭烤豬肋排飯", price: 390 },
-        { name: "野菇起司漢堡排蓋飯", price: 290 },
-        { name: "蕃茄炭烤雞肉筆尖麵", price: 290 },
-        { name: "蕃茄酥炸魚柳筆尖麵", price: 290 },
-        { name: "經典美式起司漢堡", price: 290 }
+        { name: "清新香橘雞肉沙拉", price: 230, cropClass: "crop-1" },
+        { name: "雙醬炭烤豬肋排飯", price: 390, cropClass: "crop-2" },
+        { name: "野菇起司漢堡排蓋飯", price: 290, cropClass: "crop-3" },
+        { name: "蕃茄炭烤雞肉筆尖麵", price: 290, cropClass: "crop-4" },
+        { name: "蕃茄酥炸魚柳筆尖麵", price: 290, cropClass: "crop-5" },
+        { name: "經典美式起司漢堡", price: 290, cropClass: "crop-6" }
     ],
     "開飯川食堂": [
         { name: "清酸帶鹹開胃便當", price: 200 },
