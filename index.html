@@ -1,78 +1,108 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>公司午餐點餐系統</title>
-
+    <title>OCBC Global Markets | Lunch Portal</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <header>
-        <h1>🍱 公司午餐點餐系統</h1>
-        <p>選擇今天的午餐</p>
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="nav-brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-sailboat"></i>
+            </div>
+            <div class="brand-text">
+                <h1>OCBC Bank</h1>
+                <span>Global Markets Desk Lunch Portal</span>
+            </div>
+        </div>
+        <div class="nav-badge">
+            <i class="fa-solid fa-clock"></i> Daily Trading Desk Order
+        </div>
     </header>
 
-    <main>
-
-        <section>
-            <h2>今日餐廳</h2>
-
-            <div id="restaurant-info">
-                <h3>今日餐廳：還沒決定</h3>
-                <p>請等待管理員選擇今天的餐廳。</p>
+    <main class="container">
+        <!-- Today's Restaurant Banner -->
+        <section class="banner-section">
+            <div id="restaurant-info" class="restaurant-card">
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span class="status-label">Active Restaurant</span>
+                </div>
+                <h2 id="current-restaurant-title"><i class="fa-solid fa-utensils"></i> Loading today's restaurant...</h2>
+                <p id="current-restaurant-desc">Please wait while the desk admin finalizes today's selection.</p>
             </div>
         </section>
 
-        <section>
-            <h2>今日菜單</h2>
+        <div class="grid-layout">
+            <!-- Menu Catalog -->
+            <section class="menu-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-book-open"></i> Today's Menu</h2>
+                    <span class="tag-pill" id="menu-count">0 items available</span>
+                </div>
+                <div id="menu" class="menu-grid">
+                    <p class="empty-state">No menu available at the moment.</p>
+                </div>
+            </section>
 
-            <div id="menu">
-                <p>目前還沒有菜單。</p>
-            </div>
-        </section>
+            <!-- Sidebar: Shopping Cart & Checkout -->
+            <aside class="sidebar-section">
+                <section class="cart-card">
+                    <div class="section-header">
+                        <h2><i class="fa-solid fa-cart-shopping"></i> My Order Cart</h2>
+                    </div>
 
-        <section>
-            <h2>🛒 我的購物車</h2>
+                    <div id="cart" class="cart-items-container">
+                        <div class="empty-cart-state">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                            <p>Your cart is empty</p>
+                        </div>
+                    </div>
 
-            <div id="cart">
-                <p>購物車目前是空的。</p>
-            </div>
+                    <div class="cart-summary">
+                        <div class="summary-row total-row">
+                            <span>Total Amount</span>
+                            <span class="price-highlight">NT$ <span id="total">0</span></span>
+                        </div>
+                    </div>
 
-            <h3>
-                總金額：$<span id="total">0</span>
-            </h3>
-            <div class="checkout">
+                    <!-- Checkout Details -->
+                    <div class="checkout-form">
+                        <h3><i class="fa-solid fa-user-check"></i> Order Confirmation</h3>
+                        
+                        <div class="form-group">
+                            <label for="customer-name">Colleague Name / Desk ID <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="customer-name" placeholder="e.g. Hung Yu Chen (Desk 4)" required>
+                            </div>
+                        </div>
 
-    <h3>訂購資料</h3>
+                        <div class="form-group">
+                            <label for="order-note">Special Instructions (Optional)</label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-pencil"></i>
+                                <textarea id="order-note" placeholder="e.g. No ice, dressing on the side, extra spicy"></textarea>
+                            </div>
+                        </div>
 
-    <label for="customer-name">姓名</label>
-    <input
-        type="text"
-        id="customer-name"
-        placeholder="請輸入姓名"
-    >
-
-    <label for="order-note">備註（選填）</label>
-    <textarea
-        id="order-note"
-        placeholder="例如：不要辣、不要香菜"
-    ></textarea>
-
-    <button id="submit-order">
-        確認送出訂單
-    </button>
-
-</div>
-        </section>
-
+                        <button id="submit-order" class="btn-primary">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Order
+                        </button>
+                    </div>
+                </section>
+            </aside>
+        </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
-
 </body>
 </html>
