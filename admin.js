@@ -41,7 +41,7 @@ async function showCurrentRestaurant() {
         .single();
 
     if (data && data.value) {
-        currentRestaurant.innerHTML = `<h3>🍴 今日餐廳：${data.value}</h3>`;
+        currentRestaurant.innerHTML = `<h3>今日餐廳：${data.value}</h3>`;
         restaurantSelect.value = data.value;
     } else {
         currentRestaurant.innerHTML = "<p>目前還沒設定今日餐廳。</p>";
@@ -118,7 +118,7 @@ async function showOrders() {
         const orderTime = new Date(order.created_at).toLocaleString("zh-TW");
 
         orderCard.innerHTML = `
-            <h3>👤 ${order.customer_name}</h3>
+            <h3>${order.customer_name}</h3>
             <p><strong>餐廳：</strong>${order.restaurant}</p>
             <hr>
             ${itemsHTML}
