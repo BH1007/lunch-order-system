@@ -253,7 +253,7 @@ submitOrderButton.addEventListener("click", async function () {
         return;
     }
 
-    alert("🎉 訂單送出成功！");
+    alert("訂單送出成功！");
 
     cart = [];
     updateCart();
