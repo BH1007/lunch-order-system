@@ -37,7 +37,7 @@ function showCurrentRestaurant() {
     const restaurant = localStorage.getItem("todayRestaurant");
 
     if (restaurant) {
-        currentRestaurant.innerHTML = `<h3>🍴 今日餐廳：${restaurant}</h3>`;
+        currentRestaurant.innerHTML = `<h3>今日餐廳：${restaurant}</h3>`;
         restaurantSelect.value = restaurant;
     } else {
         currentRestaurant.innerHTML = "<p>目前還沒設定今日餐廳。</p>";
@@ -54,7 +54,7 @@ saveButton.addEventListener("click", function () {
 
     localStorage.setItem("todayRestaurant", restaurant);
     showCurrentRestaurant();
-    alert("✅ 今日餐廳設定成功！");
+    alert("今日餐廳設定成功！");
 });
 
 showCurrentRestaurant();
@@ -75,7 +75,7 @@ async function showOrders() {
 
     if (error) {
         console.error(error);
-        ordersContainer.innerHTML = "<p>❌ 讀取訂單失敗。</p>";
+        ordersContainer.innerHTML = "<p>讀取訂單失敗。</p>";
         return;
     }
 
@@ -104,7 +104,7 @@ async function showOrders() {
         const orderTime = new Date(order.created_at).toLocaleString("zh-TW");
 
         orderCard.innerHTML = `
-            <h3>👤 ${order.customer_name}</h3>
+            <h3>${order.customer_name}</h3>
             <p><strong>餐廳：</strong>${order.restaurant}</p>
             <hr>
             ${itemsHTML}
@@ -131,7 +131,7 @@ async function showOrderSummary() {
 
     if (error) {
         console.error(error);
-        orderSummary.innerHTML = "<p>❌ 讀取統計資料失敗。</p>";
+        orderSummary.innerHTML = "<p>讀取統計資料失敗。</p>";
         return;
     }
 
@@ -188,7 +188,7 @@ const clearOrdersButton = document.getElementById("clear-orders");
 
 if (clearOrdersButton) {
     clearOrdersButton.addEventListener("click", async function () {
-        const confirmed = confirm("⚠️ 確定要清空今天所有訂單嗎？\n\n刪除後無法復原。");
+        const confirmed = confirm("確定要清空今天所有訂單嗎？\n\n刪除後無法復原。");
 
         if (!confirmed) {
             return;
@@ -204,11 +204,11 @@ if (clearOrdersButton) {
 
         if (error) {
             console.error(error);
-            alert("❌ 清除失敗");
+            alert("清除失敗");
             return;
         }
 
-        alert("✅ 今日訂單已清空");
+        alert("今日訂單已清空");
         await showOrders();
         await showOrderSummary();
     });
